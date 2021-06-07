@@ -31,6 +31,36 @@ namespace Repositorio
             return func(path).Result;
         }
 
+        public static List<Model> get(string path, int cod)
+        {
+            object body = new
+            {
+                cod_empresa = cod
+            };
+
+            Func<string, object, Task<List<Model>>> func = async (_path, _body) =>
+            {
+                List<Model> models = default;
+
+
+                var client = new HttpClient();
+                var serializedProduto = JsonConvert.SerializeObject(_body);
+                var content = new StringContent(serializedProduto, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.method
+                var result = await client.(host + path, content);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    HttpContent content = response.Content;
+                    models = await content.ReadAsAsync<List<Model>>();
+                }
+                return models;
+            };
+
+            return func(path, body).Result;
+        }
+
         public async static void post(string path, Model model)
         {
             using (var client = new HttpClient())
